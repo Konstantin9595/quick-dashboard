@@ -3,6 +3,17 @@ import ReactDOM from 'react-dom';
 import './styles/index.scss';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
+import { store, sagaMiddleware, action } from './store/createStore'
+import rootSaga from './store/saga';
+
+
+store.subscribe(() => {
+    console.log("subscribe = ", store.getState())
+})
+
+sagaMiddleware.run(rootSaga)
+
+action("FETCH_CONTENT_SUCCESS")
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

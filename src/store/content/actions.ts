@@ -1,21 +1,11 @@
-import { INIT_LOAD_CONTENT, INIT_LOAD_CONTENT_FAIL, INIT_LOAD_CONTENT_SUCCESS, InitLoadContentType } from './types';
+import { FETCH_CONTENT_REQUEST, FETCH_CONTENT_SUCCESS, FETCH_CONTENT_FAILURE, ContentState } from './types';
+import { createCustomAction, createAsyncAction } from 'typesafe-actions'
 
 
-export const initLoadContentAction = (): InitLoadContentType  =>  {
-    return {
-        type: INIT_LOAD_CONTENT
-    }
-}
+export const fetchContentRequested = createCustomAction("FETCH_CONTENT_REQUESTED")
 
-export const initLoadContentSuccessAction = (): InitLoadContentType => {
-    return {
-        type: INIT_LOAD_CONTENT_SUCCESS
-    }
-}
-
-export const initLoadContentFailAction = (): InitLoadContentType => {
-    return {
-        type: INIT_LOAD_CONTENT_FAIL,
-        error: {}
-    }
-}
+export const fetchContentAsync = createAsyncAction(
+    FETCH_CONTENT_REQUEST,
+    FETCH_CONTENT_SUCCESS,
+    FETCH_CONTENT_FAILURE,
+)<undefined, {}, {}>();
