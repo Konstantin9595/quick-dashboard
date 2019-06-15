@@ -1,26 +1,26 @@
 import { ContentState } from './types';
-import { createReducer, action } from 'typesafe-actions';
-import { fetchContentAsync, fetchContentRequested } from './actions';
-import { Action } from 'redux';
+import { createReducer, action, ActionType, getType, PayloadAction } from 'typesafe-actions';
+import * as content from './actions'
+export type ContentAction = ActionType<typeof content>;
+
+const { fetchContentAsync } = content;
 
 const initialState: ContentState = {
-    data: []
+    nodes: []
 };
 
+
+
 const loadContentReducer = 
-    createReducer<ContentState, Action>(initialState)
-    .handleAction(fetchContentAsync.success.toString(), (state, action:any ) => {
-        return {
-            ...state,
-            data: action.payload
+    createReducer<ContentState, ContentAction>(initialState)
+    .handleAction(fetchContentAsync.success, (state:any, action:any) => {
+        if(action.payload) {
+            return {
+                ...state,
+                nodes: action.payload
+            }
         }
-    });
+        return { ...state }
+    })
 
  export default loadContentReducer;
-
-    // .handleAction(fetchContentAsync.failure.toString(), (state:ContentState, action:Action) => {
-    //     return {
-    //         ...state,
-    //         data: action.type
-    //     }
-    // })

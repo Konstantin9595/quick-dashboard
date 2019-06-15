@@ -4,5 +4,5 @@ export const FETCH_CONTENT_FAILURE = "FETCH_CONTENT_FAILURE";
 
 
 export interface ContentState {
-    data: [];
+    nodes: [];
 }
