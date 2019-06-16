@@ -9,14 +9,14 @@ interface ILayout {
     props: {}
 }
 
-const Layout: React.FC<ILayout> = ({props: {nodes, defaultContentAction}}:any) => {
+const Layout: React.FC<ILayout> = ({props: {content, defaultContentAction, searchContentAction} }:any) => {
     return (
         <Fragment>
             <CssBaseline />
-            <Header />
+            <Header searchContentAction={searchContentAction}/>
             <main>
                <AppDescription />
-               <Content repositories={nodes} defaultContentAction={defaultContentAction}/>
+               <Content repositories={content} defaultContentAction={defaultContentAction}/>
             </main>
         </Fragment>
     );

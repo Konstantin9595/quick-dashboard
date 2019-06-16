@@ -5,6 +5,11 @@ export const fetchDefaultContent = createCustomAction("FETCH_DEFAULT_CONTENT", (
     return (count: number) => ({type, payload: count})
 })
 
+export const searchContentAction = createCustomAction("SEARCH_CONTENT", (type) => {
+    return (text: string) => ({type, payload: text})
+})
+
+
 export const fetchContentAsync = createAsyncAction(
     FETCH_CONTENT_REQUEST,
     FETCH_CONTENT_SUCCESS,

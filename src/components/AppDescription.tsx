@@ -26,6 +26,7 @@ const AppDescription: React.FC = () => {
                         </Typography>
                         <div className="desc">
                             <p>
+                                <strong>Тестовое задание: </strong>
                                 <q>
                                     Оснавная идея заключается в быстром доступе к документации самых популярных библиотек
                                     для фронтендера.

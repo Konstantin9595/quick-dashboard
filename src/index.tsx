@@ -13,8 +13,6 @@ import { Provider } from 'react-redux'
 
 sagaMiddleware.run(rootSaga)
 
-//action(fetchDefaultContent.toString())
-
 ReactDOM.render(
     <Provider store={store}>
         <App />

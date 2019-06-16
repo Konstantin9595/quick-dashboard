@@ -1,14 +1,23 @@
-import React, { Fragment } from 'react'
+import React, { Component, Fragment } from 'react'
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { fade, makeStyles, withStyles, createStyles, Theme} from '@material-ui/core/styles';
+import Link from '@material-ui/core/Link';
+import Container from '@material-ui/core/Container';
 
-const useStyles = makeStyles(theme => ({
+const styles = (theme:Theme) => createStyles({
     appBar: {
       justifyContent: 'space-between'
+    },
+    logo: {
+        color: "#fff",
+        textDecoration: "none",
+        "&:hover": {
+            textDecoration: "none"
+        },
     },
     search: {
         position: 'relative',
@@ -47,34 +56,57 @@ const useStyles = makeStyles(theme => ({
             },
         },
     },
-}));
+});
 
-const Header: React.FC = () => {
-    const classes = useStyles();
-    return (
-        <Fragment>
-            <AppBar position="relative">
-                <Toolbar className={classes.appBar}>
-                    <Typography variant="h6" color="inherit" noWrap>
-                        Quick dashboard
-                    </Typography>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Поиск…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </div>
-                </Toolbar>
-            </AppBar>
-        </Fragment>
-    )
+interface IPropsHeader {
+    searchContentAction: Function;
+};
+
+class Header extends Component<IPropsHeader> {
+    
+    state = {
+        searchText: ""
+    }
+
+    search = (event:any) => {
+        const { searchContentAction } = this.props;
+        this.setState({searchText: event.target.value});
+
+        searchContentAction(event.target.value);
+    }
+
+    render() {
+        const { classes, searchContentAction }:any = this.props;
+
+        return (
+            <Fragment>
+                    <AppBar position="sticky">
+                    <Container maxWidth="md">
+                        <Toolbar className={classes.appBar}>
+                            <Typography variant="h6" color="inherit" noWrap >
+                            <Link href="#" className={classes.logo} >Quick dashboard </ Link>
+                            </Typography>
+                            <div className={classes.search}>
+                                <div className={classes.searchIcon}>
+                                    <SearchIcon />
+                                </div>
+                                <InputBase
+                                    value={this.state.searchText}
+                                    placeholder="Поиск…"
+                                    classes={{
+                                        root: classes.inputRoot,
+                                        input: classes.inputInput,
+                                    }}
+                                    inputProps={{ 'aria-label': 'search' }}
+                                    onChange={this.search}
+                                />
+                            </div>
+                        </Toolbar>
+                        </Container>
+                    </AppBar>
+            </Fragment>
+        )
+    }
 }
 
-export default Header;
+export default withStyles(styles)(Header);

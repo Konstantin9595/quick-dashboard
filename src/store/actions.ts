@@ -4,8 +4,3 @@ export {
     fetchDefaultContent,
     fetchContentAsync
 };
-
-// export default {
-//     fetchDefaultContent,
-//     fetchContentAsync
-// }

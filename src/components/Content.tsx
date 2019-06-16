@@ -6,10 +6,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { fade, makeStyles, withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import _ from 'lodash';
-import { width } from '@material-ui/system';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = (theme: Theme) => createStyles({
@@ -36,21 +35,23 @@ const styles = (theme: Theme) => createStyles({
         }
     },
     preLoader: {
-        marginTop: "50px"
+        marginTop: "50px",
+        justifyContent: "center"
     }
 });
 
-interface IProps {
+interface IPropsContent {
     repositories: {};
     defaultContentAction: Function;
 }
 
-class Content extends Component<IProps> {
+class Content extends Component<IPropsContent> {
 
     state = {
         count: 6,
-        isLoading: false,
-        content: []
+        isFetchLoading: false,
+        content: [],
+        initialLoading: false
     }
 
     componentDidMount() {
@@ -58,17 +59,17 @@ class Content extends Component<IProps> {
     }
 
     componentDidUpdate(prevProps:{}, prevState:{}) {
-
+        
         if(!_.isEqual(prevProps, this.props)) {
-
             this.setState((state) => {
                 const { content:prevStateContent, count:prevCount }:any = state;
-                const { repositories:{nodes} }:any = this.props;
+                const { repositories:{content, filteredContent} }:any = this.props;
+                const result = !_.isEmpty(filteredContent) ? filteredContent : content;
 
                 return {
                     ...state,
                     count: prevCount + 3,
-                    content: [...nodes]
+                    content: [...result]
                 }
             })
 
@@ -77,23 +78,28 @@ class Content extends Component<IProps> {
     }
 
     pageScroll = window.onscroll = () => {
-        const windowHeigh = window.innerHeight;
-        const userScrollTop = document.documentElement.scrollTop;
-        const userScrollHeight = document.documentElement.scrollHeight;
+        const { repositories: {searchMode} }:any =  this.props;
 
-        if( (windowHeigh + userScrollTop) === userScrollHeight) {
-            this.setState({isLoading: true})
-            this.props.defaultContentAction(this.state.count)
+        if(searchMode) {
+            this.setState({isFetchLoading: false})
+        } else {
+            const windowHeigh = window.innerHeight;
+            const userScrollTop = document.documentElement.scrollTop;
+            const userScrollHeight = document.documentElement.scrollHeight;
+            
+    
+            if( (windowHeigh + userScrollTop) === userScrollHeight) {
+                this.setState({isFetchLoading: true})
+                this.props.defaultContentAction(this.state.count)
+            }
         }
-        
+
     }
 
     render() {
         const { classes }:any = this.props;
-        const { repositories }:any = this.props;
         const { content } = this.state;
-        const preLoader = (this.state.isLoading ? <CircularProgress className={classes.preLoader} disableShrink /> : null)
-
+        const contentPreLoader = (this.state.isFetchLoading ? <CircularProgress className={classes.preLoader} disableShrink /> : null)
 
         const result = content.map(({id, name, url, description, openGraphImageUrl: image}:any) => (
             <Grid item key={id} xs={12} sm={6} md={4}>
@@ -120,13 +126,15 @@ class Content extends Component<IProps> {
             </Grid>
         ))
 
+        
+
         return (
             <Fragment>
             <Container className={classes.cardGrid} maxWidth="md">
                 <Grid container spacing={4}>
                     { result }
                 </Grid>
-                { preLoader }
+                { contentPreLoader }
             </Container>
     </Fragment>
         );
