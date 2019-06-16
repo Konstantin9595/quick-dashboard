@@ -9,7 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import { fade, makeStyles, withStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import _ from 'lodash';
-
+import { width } from '@material-ui/system';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = (theme: Theme) => createStyles({
     cardGrid: {
@@ -33,6 +34,9 @@ const styles = (theme: Theme) => createStyles({
         "&:hover": {
             color: "#3f51b5"
         }
+    },
+    preLoader: {
+        marginTop: "50px"
     }
 });
 
@@ -43,20 +47,54 @@ interface IProps {
 
 class Content extends Component<IProps> {
 
+    state = {
+        count: 6,
+        isLoading: false,
+        content: []
+    }
 
     componentDidMount() {
-        this.props.defaultContentAction(24)
+        console.log("componentDidMount = ")
+        this.props.defaultContentAction(this.state.count)
     }
 
-    scrollPage = window.onscroll = (event) => {
-        console.log("scroll event = ", event)
+    componentDidUpdate(prevProps:{}, prevState:{}) {
+
+        if(!_.isEqual(prevProps, this.props)) {
+
+            this.setState((state) => {
+                const { content:prevStateContent, count:prevCount }:any = state;
+                const { repositories:{nodes} }:any = this.props;
+
+                return {
+                    ...state,
+                    count: prevCount + 3,
+                    content: [...nodes]
+                }
+            })
+
+        }
+
     }
 
+    pageScroll = window.onscroll = () => {
+        const windowHeigh = window.innerHeight;
+        const userScrollTop = document.documentElement.scrollTop;
+        const userScrollHeight = document.documentElement.scrollHeight;
+
+        if( (windowHeigh + userScrollTop) === userScrollHeight) {
+            this.setState({isLoading: true})
+            this.props.defaultContentAction(this.state.count)
+        }
+        
+    }
 
     render() {
         const { classes }:any = this.props;
-        const { repositories }:any = this.props
-        const content = _.isEmpty(repositories) ? [] : repositories.nodes;
+        const { repositories }:any = this.props;
+        const { content } = this.state;
+        const preLoader = (this.state.isLoading ? <CircularProgress className={classes.preLoader} disableShrink /> : null)
+
 
         const result = content.map(({id, name, url, description, openGraphImageUrl: image}:any) => (
             <Grid item key={id} xs={12} sm={6} md={4}>
@@ -75,19 +113,21 @@ class Content extends Component<IProps> {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Button className={classes.button} size="small" color="primary" fullWidth href={url}>
+                        <Button className={classes.button} target="_blank" size="small" color="primary" fullWidth href={url}>
                             Перейти...
                         </Button>
                     </CardActions>
                 </Card>
             </Grid>
         ))
+
         return (
             <Fragment>
             <Container className={classes.cardGrid} maxWidth="md">
                 <Grid container spacing={4}>
                     { result }
                 </Grid>
+                { preLoader }
             </Container>
     </Fragment>
         );
