@@ -54,7 +54,6 @@ class Content extends Component<IProps> {
     }
 
     componentDidMount() {
-        console.log("componentDidMount = ")
         this.props.defaultContentAction(this.state.count)
     }
 
