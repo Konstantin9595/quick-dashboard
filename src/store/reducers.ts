@@ -1,5 +1,8 @@
-import loadContentReducer from './content/reducers'
+import loadContentReducer from './content/reducers';
+import { combineReducers } from 'redux';
 
-export {
-    loadContentReducer
-}
+const rootReducer = combineReducers({
+    content: loadContentReducer
+});
+
+export default rootReducer;

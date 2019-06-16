@@ -25,25 +25,30 @@ export default class graphQueries implements GraphQueriesScheme {
         }
     })
 
-    fetchStarRepositories = async():Promise<FetchResult> => {
-        const result = await this.client.query({
-            query: this.scheme`
-                query {
-                    search(first: 100, query:"language:JavaScript stars:>5000 sort:forks", type: REPOSITORY){
-                        nodes {
-                          ... on Repository {
-                            id
-                            name
-                            url
-                            description
-                            openGraphImageUrl
+    fetchStarRepositories = async(count:number):Promise<FetchResult> => {
+        try {
+            const result = await this.client.query({
+                query: this.scheme`
+                    query {
+                        search(first: ${count}, query:"language:JavaScript stars:>5000 sort:forks", type: REPOSITORY){
+                            nodes {
+                              ... on Repository {
+                                id
+                                name
+                                url
+                                description
+                                openGraphImageUrl
+                              }
+                            }
                           }
-                        }
-                      }
-                }
-            `
-        });
-        return result;
+                    }
+                `
+            });
+            return result;
+        }catch(error) {
+            console.log("fetchStarRepositoriesERROR = ", error)
+        }
+
     }
 
     query = async(query:any):Promise<FetchResult> => {

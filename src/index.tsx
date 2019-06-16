@@ -7,13 +7,13 @@ import { store, sagaMiddleware, action } from './store/createStore'
 import rootSaga from './store/saga';
 import { Provider } from 'react-redux'
 
-store.subscribe(() => {
-    console.log("subscribe = ", store.getState())
-})
+// store.subscribe(() => {
+//     console.log("subscribe = ", store.getState())
+// })
 
 sagaMiddleware.run(rootSaga)
 
-// action("FETCH_CONTENT_SUCCESS")
+//action(fetchDefaultContent.toString())
 
 ReactDOM.render(
     <Provider store={store}>

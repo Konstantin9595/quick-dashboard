@@ -6,7 +6,7 @@ export type ContentAction = ActionType<typeof content>;
 const { fetchContentAsync } = content;
 
 const initialState: ContentState = {
-    nodes: []
+    nodes: {}
 };
 
 
