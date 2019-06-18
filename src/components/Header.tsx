@@ -71,7 +71,6 @@ class Header extends Component<IPropsHeader> {
     search = (event:any) => {
         const { searchContentAction } = this.props;
         this.setState({searchText: event.target.value});
-
         searchContentAction(event.target.value);
     }
 

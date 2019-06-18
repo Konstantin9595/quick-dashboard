@@ -1,4 +1,4 @@
-import ApoloClient from 'apollo-boost';
+import ApoloClient from "apollo-boost";
 import { ApolloClientOptions, CacheResolver, FetchResult } from 'apollo-boost'
 import gql from 'graphql-tag';
 
@@ -58,42 +58,4 @@ export default class graphQueries implements GraphQueriesScheme {
         return result
     }
 
-//     client.query({
-//         query: gql`
-//             query {
-//                 search()
-//             }
-//         `,
-//     })
-// }
-
 }
-// Динамический вывод самых популярных репозиториев (работа с search)
-    // 100 репозиториев
-    // language=`javaScript`
-    // star>=5000
-
-
-    // search(first: 100, query:"language:JavaScript stars:>5000 sort:forks", type: REPOSITORY){
-    //     nodes {
-    //       ... on Repository {
-    //         id
-    //         name
-    //         url
-    //         description
-    //         openGraphImageUrl
-    //       }
-    //     }
-    //   }
-
-// Достать все репозитории которые соответствуют поисковым меткам
-// Из репозитория мне нужны следующие поля:
-    // 
-
-    // const client = new ApoloClient({
-//     uri: 'https://api.github.com/graphql',
-//     headers: {
-//         "Content-Type": "application/json",
-//         "Authorization": "bearer ad570f9114590a6f8178dd8ea9250cdca9559bfe"
-//     }
-// })

@@ -48,7 +48,7 @@ interface IPropsContent {
 class Content extends Component<IPropsContent> {
 
     state = {
-        count: 6,
+        count: 12,
         isFetchLoading: false,
         content: [],
         initialLoading: false
@@ -58,31 +58,40 @@ class Content extends Component<IPropsContent> {
         this.props.defaultContentAction(this.state.count)
     }
 
-    componentDidUpdate(prevProps:{}, prevState:{}) {
+    componentDidUpdate(prevProps:{}) {
         
         if(!_.isEqual(prevProps, this.props)) {
-            this.setState((state) => {
-                const { content:prevStateContent, count:prevCount }:any = state;
-                const { repositories:{content, filteredContent} }:any = this.props;
-                const result = !_.isEmpty(filteredContent) ? filteredContent : content;
-
-                return {
-                    ...state,
-                    count: prevCount + 3,
-                    content: [...result]
-                }
-            })
+            this.loadContent();
 
         }
 
     }
 
+    loadContent = () => {
+		this.setState((state) => {
+			const {count: prevCount}: any = state;
+			const {
+				repositories: {content, filteredContent},
+			}: any = this.props;
+
+			const result = !_.isEmpty(filteredContent) ? filteredContent : content;
+
+			return {
+				...state,
+				count: prevCount + 3,
+				content: [...result],
+			};
+		});
+	};
+
     pageScroll = window.onscroll = () => {
         const { repositories: {searchMode} }:any =  this.props;
 
         if(searchMode) {
+            console.log("searchMode = true")
             this.setState({isFetchLoading: false})
         } else {
+            console.log("searchMode = false")
             const windowHeigh = window.innerHeight;
             const userScrollTop = document.documentElement.scrollTop;
             const userScrollHeight = document.documentElement.scrollHeight;

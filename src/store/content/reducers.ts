@@ -17,7 +17,8 @@ const loadContentReducer =
         if(action.payload) {
             return {
                 ...state,
-                content: action.payload
+                content: action.payload,
+                filteredContent: []
             }
         }
         return { ...state }
@@ -25,11 +26,14 @@ const loadContentReducer =
     .handleAction(searchContentAction, (state:any, action:any) => {
         const filterResult = state.content.filter((el:any) => el.name.indexOf(action.payload) !== -1)
         const searchMode = action.payload ? true : false
-        return {
-            ...state,
-            filteredContent: filterResult,
-            searchMode
+        if(filterResult) {
+            return {
+                ...state,
+                filteredContent: filterResult,
+                searchMode
+            }
         }
+
     })
 
  export default loadContentReducer;
