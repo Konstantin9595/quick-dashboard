@@ -25,7 +25,7 @@ export default class graphQueries implements GraphQueriesScheme {
         }
     })
 
-    fetchStarRepositories = async(count:number):Promise<FetchResult> => {
+    fetchStarRepositories = async(count:number) => {
         try {
             const result = await this.client.query({
                 query: this.scheme`
