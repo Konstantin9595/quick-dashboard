@@ -85,19 +85,16 @@ class Content extends Component<IPropsContent> {
 	};
 
     pageScroll = window.onscroll = () => {
+        
         const { repositories: {searchMode} }:any =  this.props;
 
         if(searchMode) {
-            console.log("searchMode = true")
             this.setState({isFetchLoading: false})
         } else {
-            console.log("searchMode = false")
-            const windowHeigh = window.innerHeight;
-            const userScrollTop = document.documentElement.scrollTop;
             const userScrollHeight = document.documentElement.scrollHeight;
+            const userOffsetHeigh = document.documentElement.offsetHeight;
             
-    
-            if( (windowHeigh + userScrollTop) === userScrollHeight) {
+            if( userOffsetHeigh === userScrollHeight) {
                 this.setState({isFetchLoading: true})
                 this.props.defaultContentAction(this.state.count)
             }

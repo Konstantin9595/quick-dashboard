@@ -5,6 +5,7 @@ import LayoutContainer from './LayoutContainer'
 
 
 const App: React.FC = () => {
+  console.log("ADDDDDDD", process.env)
   return (
     <div className="App">
       <LayoutContainer />
