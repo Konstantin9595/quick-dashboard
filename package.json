@@ -37,6 +37,7 @@
     "redux-logger": "^3.0.6",
     "redux-saga": "^1.0.3",
     "redux-thunk": "^2.3.0",
+    "resolve": "^1.12.0",
     "terser-webpack-plugin": "1.2.3",
     "ts-pnp": "1.1.2",
     "typesafe-actions": "^4.4.0",
@@ -81,7 +82,6 @@
     "postcss-normalize": "7.0.1",
     "postcss-preset-env": "6.6.0",
     "postcss-safe-parser": "4.0.1",
-    "resolve": "1.10.0",
     "sass-loader": "7.1.0",
     "semver": "6.0.0",
     "style-loader": "0.23.1"
